@@ -1,0 +1,456 @@
+/* ══════════════════════════════════════════════════════════
+   BLOOP Interpreter — style.css
+   Theme: Dark terminal / IDE aesthetic
+   Fonts: JetBrains Mono (code) · Syne (UI headings)
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  --bg:           #0d0f14;        /* page background          */
+  --surface:      #13161e;        /* panel background         */
+  --surface-2:    #1a1e28;        /* slightly elevated        */
+  --border:       #252a38;        /* subtle border            */
+  --border-focus: #4a6fa5;        /* focus ring colour        */
+
+  --text:         #d4daf0;        /* primary text             */
+  --text-dim:     #5a6280;        /* muted/placeholder        */
+  --text-bright:  #eef1ff;        /* headings / bright text   */
+
+  --accent:       #5b8cff;        /* primary accent (blue)    */
+  --accent-glow:  rgba(91,140,255,.18);
+
+  --green:        #4ec994;        /* success / output         */
+  --red:          #ff5f6d;        /* error                    */
+  --yellow:       #f5c842;        /* warning                  */
+  --orange:       #ff884d;
+
+  --radius:       10px;
+  --radius-sm:    6px;
+
+  --font-code:    'JetBrains Mono', 'Fira Code', monospace;
+  --font-ui:      'Syne', system-ui, sans-serif;
+
+  --header-h:     68px;
+  --footer-h:     44px;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-code);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* subtle grid texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(91,140,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,140,255,.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Site Header ────────────────────────────────────────── */
+.site-header {
+  position: relative;
+  z-index: 1;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13,15,20,.85);
+  backdrop-filter: blur(12px);
+}
+
+.logo {
+  font-family: var(--font-ui);
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--text-bright);
+}
+
+.logo-bracket {
+  color: var(--accent);
+}
+
+.tagline {
+  font-size: .72rem;
+  color: var(--text-dim);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── Main Workspace ─────────────────────────────────────── */
+.workspace {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px 28px;
+  min-height: 0;  /* allow children to shrink */
+}
+
+/* ── Shared Panel Styles ────────────────────────────────── */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 480px;
+  transition: border-color .2s;
+}
+
+.panel:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* ── Panel Title Bar (macOS-ish) ────────────────────────── */
+.panel-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 6px;
+}
+
+.tl {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.tl-red    { background: #ff5f57; }
+.tl-yellow { background: #febc2e; }
+.tl-green  { background: #28c840; }
+
+.panel-title {
+  font-size: .75rem;
+  color: var(--text-dim);
+  letter-spacing: .06em;
+  margin-left: 4px;
+}
+
+/* ── Editor Panel ───────────────────────────────────────── */
+.editor-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Line numbers gutter */
+.line-numbers {
+  min-width: 44px;
+  padding: 16px 10px 16px 14px;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: .8rem;
+  line-height: 1.7;
+  text-align: right;
+  user-select: none;
+  white-space: pre;
+  overflow: hidden;
+}
+
+/* Code textarea */
+.code-textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 16px 18px;
+  color: var(--text);
+  font-family: var(--font-code);
+  font-size: .88rem;
+  line-height: 1.7;
+  caret-color: var(--accent);
+  tab-size: 2;
+  overflow-y: auto;
+}
+
+.code-textarea::placeholder {
+  color: var(--text-dim);
+  opacity: .6;
+}
+
+/* Scrollbar styling */
+.code-textarea::-webkit-scrollbar,
+.console-body::-webkit-scrollbar { width: 6px; height: 6px; }
+.code-textarea::-webkit-scrollbar-track,
+.console-body::-webkit-scrollbar-track { background: transparent; }
+.code-textarea::-webkit-scrollbar-thumb,
+.console-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* Editor footer */
+.editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.lang-badge {
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(91,140,255,.12);
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(91,140,255,.25);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  font-family: var(--font-code);
+  font-size: .8rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 18px;
+  cursor: pointer;
+  transition: background .15s, transform .1s, opacity .15s;
+  letter-spacing: .04em;
+}
+
+.btn:active { transform: scale(.96); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+/* Ghost (secondary) button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--text);
+  border-color: #3a4260;
+  background: var(--surface-2);
+}
+
+/* Primary (Run) button */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 0 18px rgba(91,140,255,.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #7aa3ff;
+  box-shadow: 0 0 26px rgba(91,140,255,.45);
+}
+
+/* Running spinner state added via JS */
+.btn-primary.running .btn-icon {
+  display: inline-block;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Console Panel ──────────────────────────────────────── */
+.console-panel .panel-titlebar {
+  position: relative;
+}
+
+.clear-console-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: .75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color .15s, background .15s;
+}
+
+.clear-console-btn:hover {
+  color: var(--text);
+  background: var(--border);
+}
+
+/* Console body */
+.console-body {
+  flex: 1;
+  padding: 16px 18px;
+  overflow-y: auto;
+  font-size: .85rem;
+  line-height: 1.8;
+}
+
+/* Welcome / idle hint */
+.console-welcome {
+  color: var(--text-dim);
+  font-size: .8rem;
+  padding: 8px 0;
+}
+
+.dim { color: var(--text-dim); }
+
+/* Individual output lines */
+.output-line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+  animation: fadeSlide .15s ease both;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Output types */
+.output-line.stdout  { color: var(--green); }
+.output-line.stderr  { color: var(--red); }
+.output-line.info    { color: var(--accent); }
+.output-line.system  { color: var(--text-dim); font-style: italic; }
+
+/* Prompt prefix */
+.output-line::before {
+  content: attr(data-prefix);
+  margin-right: 8px;
+  opacity: .55;
+}
+
+/* Error block */
+.error-block {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: rgba(255,95,109,.08);
+  border: 1px solid rgba(255,95,109,.25);
+  border-left: 3px solid var(--red);
+  border-radius: var(--radius-sm);
+  color: var(--red);
+  font-size: .82rem;
+  white-space: pre-wrap;
+  animation: fadeSlide .2s ease both;
+}
+
+.error-label {
+  font-weight: 600;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  opacity: .8;
+}
+
+/* Console status bar */
+.console-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: .7rem;
+}
+
+.status-idle    { color: var(--text-dim); }
+.status-running { color: var(--yellow); }
+.status-ok      { color: var(--green); }
+.status-error   { color: var(--red); }
+
+.exec-time { color: var(--text-dim); }
+
+/* ── Loader bar (runs across the top of console) ─────────── */
+.loader-bar {
+  height: 2px;
+  background: var(--accent);
+  width: 0%;
+  transition: width .4s ease;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* ── Site Footer ────────────────────────────────────────── */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  border-top: 1px solid var(--border);
+  font-size: .68rem;
+  color: var(--text-dim);
+  letter-spacing: .04em;
+}
+
+kbd {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: var(--font-code);
+  font-size: .65rem;
+  color: var(--text);
+}
+
+.kbd-hint { display: flex; align-items: center; gap: 5px; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .workspace {
+    grid-template-columns: 1fr;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .panel { min-height: 300px; }
+
+  .site-header { padding: 0 18px; gap: 12px; }
+  .tagline { display: none; }
+
+  .site-footer { padding: 0 18px; }
+  .kbd-hint { display: none; }
+}

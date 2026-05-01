@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLOOP — Interpreter</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: JetBrains Mono for code, Syne for UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-bracket">[</span>BLOOP<span class="logo-bracket">]</span>
+    </div>
+    <p class="tagline">A Custom Programming Language Interpreter</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       MAIN LAYOUT
+  ═══════════════════════════════════════ -->
+  <main class="workspace">
+
+    <!-- ── LEFT PANEL: Code Editor ── -->
+    <section class="panel editor-panel">
+
+      <!-- Panel title bar -->
+      <div class="panel-titlebar">
+        <div class="traffic-lights">
+          <span class="tl tl-red"></span>
+          <span class="tl tl-yellow"></span>
+          <span class="tl tl-green"></span>
+        </div>
+        <span class="panel-title">editor.bloop</span>
+      </div>
+
+      <!-- Line numbers + textarea wrapper -->
+      <div class="editor-body">
+        <div class="line-numbers" id="lineNumbers" aria-hidden="true">1</div>
+        <textarea
+          id="codeEditor"
+          class="code-textarea"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="// Write your BLOOP code here…"
+          aria-label="BLOOP code editor"
+        ></textarea>
+      </div>
+
+      <!-- Editor footer / controls -->
+      <div class="editor-footer">
+        <span class="lang-badge">BLOOP</span>
+        <div class="controls">
+          <button id="clearBtn" class="btn btn-ghost" title="Clear editor">Clear</button>
+          <button id="runBtn" class="btn btn-primary" title="Run code (Ctrl+Enter)">
+            <span class="btn-icon">▶</span> Run
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── RIGHT PANEL: Output Console ── -->
+    <section class="panel console-panel">
+
+      <!-- Panel title bar -->
+      <div class="panel-titlebar">
+        <div class="traffic-lights">
+          <span class="tl tl-red"></span>
+          <span class="tl tl-yellow"></span>
+          <span class="tl tl-green"></span>
+        </div>
+        <span class="panel-title">console</span>
+        <button id="clearOutputBtn" class="clear-console-btn" title="Clear console">✕</button>
+      </div>
+
+      <!-- Output area -->
+      <div class="console-body" id="consoleBody">
+        <!-- Output lines are injected here by script.js -->
+        <div class="console-welcome">
+          <span class="dim">// Waiting for execution…</span>
+        </div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="console-statusbar">
+        <span id="statusText" class="status-idle">Idle</span>
+        <span id="execTime" class="exec-time"></span>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="site-footer">
+    <span>BLOOP Interpreter &copy; 2025</span>
+    <span class="kbd-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
