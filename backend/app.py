@@ -184,9 +184,18 @@ def serve_static(filename):
 #  Entry Point
 # ════════════════════════════════════════════════════════════
 
+import os
+
 if __name__ == "__main__":
     print("╔══════════════════════════════════════════╗")
     print("║   BLOOP Interpreter — Flask Backend      ║")
-    print("║   http://localhost:5000                  ║")
+    print("║   Running on Render / Localhost          ║")
     print("╚══════════════════════════════════════════╝")
-    app.run(host="0.0.0.0", port=5000, debug=True)
+
+    port = int(os.environ.get("PORT", 10000))
+
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=True
+    )
