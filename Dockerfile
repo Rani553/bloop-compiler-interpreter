@@ -1,7 +1,10 @@
 FROM eclipse-temurin:17-jdk
 
-# Install Python
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Install Python + venv
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv
 
 # Set working directory
 WORKDIR /app
@@ -9,17 +12,20 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Move into backend
+# Move to backend
 WORKDIR /app/backend
 
-# Install Python dependencies
-RUN pip3 install -r requirements.txt
+# Create virtual environment
+RUN python3 -m venv venv
 
-# Compile Java source files
+# Activate venv and install requirements
+RUN . venv/bin/activate && pip install -r requirements.txt
+
+# Compile Java files
 RUN mkdir -p java_src/bin && javac -d java_src/bin java_src/*.java
 
-# Render uses port 10000
+# Expose Render port
 EXPOSE 10000
 
-# Start Flask server
-CMD ["python3", "app.py"]
+# Start Flask app using venv python
+CMD ["venv/bin/python", "app.py"]
